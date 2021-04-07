@@ -59,11 +59,20 @@ export class Board extends BoardBase {
        * https://www.html5rocks.com/en/tutorials/canvas/hidpi/
        */
       const dpr = self.devicePixelRatio || 1
-      this.canvas.width = Board.CANVAS_WIDTH * dpr
-      this.canvas.height = Board.CANVAS_HEIGHT * dpr
+      // this.canvas.width = Board.CANVAS_WIDTH * dpr
+      // this.canvas.height = Board.CANVAS_HEIGHT * dpr
+      // this.context.scale(dpr, dpr)
+      // this.canvas.style.width = Board.CANVAS_WIDTH + 'px'
+      // this.canvas.style.height = Board.CANVAS_HEIGHT + 'px'
+
+      let width = (document.querySelector('.section') as HTMLElement).clientWidth;
+      let height = width * 79 / 100;
+
+      this.canvas.width = width * dpr
+      this.canvas.height = height * dpr
       this.context.scale(dpr, dpr)
-      this.canvas.style.width = Board.CANVAS_WIDTH + 'px'
-      this.canvas.style.height = Board.CANVAS_HEIGHT + 'px'
+      this.canvas.style.width = `${width}px`
+      this.canvas.style.height = `${height}px`
     }
   }
   private async animateAction(

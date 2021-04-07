@@ -3290,16 +3290,11 @@ function drawMask(board) {
   width = width > 855 ? 855 : width;
   height = height > 679 ? 679 : height;
   context.drawImage(img, 0, 0, width, height);
-  drawBackground(context);
   context.restore();
 }
 
 function clearCanvas(board) {
   board.context.clearRect(0, 0, _board.BoardBase.CANVAS_WIDTH, _board.BoardBase.CANVAS_HEIGHT);
-}
-
-function drawBackground(context) {
-  context.fillStyle = "#CB3E29";
 }
 },{"../core/src/board":"core/src/board/index.ts","./index":"board/index.ts"}],"board/index.ts":[function(require,module,exports) {
 "use strict";
@@ -3549,9 +3544,9 @@ var Board = function (_super) {
     if (this.canvas) {
       var dpr = self.devicePixelRatio || 1;
       var width = document.querySelector('.section').clientWidth;
-      var height = document.querySelector('.section').clientHeight;
-      this.canvas.width = width;
-      this.canvas.height = height;
+      var height = width * 79 / 100;
+      this.canvas.width = width * dpr;
+      this.canvas.height = height * dpr;
       this.context.scale(dpr, dpr);
       this.canvas.style.width = width + "px";
       this.canvas.style.height = height + "px";
@@ -5230,7 +5225,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "53199" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "59484" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

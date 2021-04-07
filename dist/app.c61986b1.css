@@ -124,7 +124,7 @@ h2 {
   display: flex;
   justify-content: space-between;
   color: #F9EEC4;
-  height: calc(100vh - 90px - 53px);
+  height: 70vw
 }
 
 .main {

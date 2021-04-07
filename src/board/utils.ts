@@ -44,7 +44,13 @@ export function drawMask(board: Board) {
   
   context.fill()
   //context.drawImage(img, 0, 0, board.canvas.width, board.canvas.height);
-  context.drawImage(img, 0, 0, BoardBase.CANVAS_WIDTH, BoardBase.CANVAS_HEIGHT);
+  
+  let width = (document.querySelector('.section') as HTMLElement).clientWidth;
+  let height = width * 79 / 100;
+  width = width > 855 ? 855 : width;
+  height = height > 679 ? 679 : height; 
+
+  context.drawImage(img, 0, 0, width, height);
   context.restore()
 }
 
