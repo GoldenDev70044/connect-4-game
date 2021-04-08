@@ -65,7 +65,7 @@ export class GameLocal extends GameBase {
 
   announceWinner(winnerBoardPiece: BoardPiece) {
     super.announceWinner(winnerBoardPiece)
-    
+
     if (winnerBoardPiece === BoardPiece.EMPTY) {
       return
     }
@@ -175,7 +175,6 @@ export function initGameLocal(
       (document.getElementById('imgP2').src != undefined) && (document.getElementById('imgP2').src != '')
     )
     {
-
       if (game.isGameWon) {
         game.reset()
         await animationFrame()

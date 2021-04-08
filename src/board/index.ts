@@ -1,14 +1,8 @@
-import { brotliCompress } from 'zlib';
 import { BoardBase, BoardPiece } from '../core/src/board'
 import { Player } from '../core/src/player'
 import { onresize, animationFrame } from '../core/src/utils'
 import { drawMask, drawCircle, clearCanvas } from './utils'
 
-var originalWidth = 2970;
-var originalHeight = 2370;
-var huecoAhueco = 330;
-var huecoAhuecoAbajo = 225;
-var originalDown = 660;
 var y = 0;
 
 
@@ -60,11 +54,6 @@ export class Board extends BoardBase {
        * https://www.html5rocks.com/en/tutorials/canvas/hidpi/
        */
       const dpr = self.devicePixelRatio || 1
-      // this.canvas.width = Board.CANVAS_WIDTH * dpr
-      // this.canvas.height = Board.CANVAS_HEIGHT * dpr
-      // this.context.scale(dpr, dpr)
-      // this.canvas.style.width = Board.CANVAS_WIDTH + 'px'
-      // this.canvas.style.height = Board.CANVAS_HEIGHT + 'px'
 
       let width = (document.querySelector('.section') as HTMLElement).clientWidth;
       let height = width * 79 / 100;
@@ -86,7 +75,6 @@ export class Board extends BoardBase {
     const doAnimation = async () => {
       clearCanvas(this)
       let x = BoardBase.MASK_X_BEGIN + (BoardBase.COLUMN_WIDTH + BoardBase.COLUMN_X_RANGE) * column;
-      // y = BoardBase.MASK_Y_BEGIN + (BoardBase.PIECE_RADIUS * 2) + ((BoardBase.CANVAS_HEIGHT * (huecoAhuecoAbajo / originalHeight)) + currentY);
       y = BoardBase.MASK_Y_BEGIN + currentY;
 
       this.render()
@@ -100,17 +88,11 @@ export class Board extends BoardBase {
     }
 
     let y2 = BoardBase.MASK_Y_BEGIN + ((BoardBase.COLUMN_WIDTH + BoardBase.COLUMN_Y_RANGE) * newRow) - 50;
-    // var y2 = BoardBase.MASK_Y_BEGIN + (BoardBase.PIECE_RADIUS * 2) + ((BoardBase.CANVAS_HEIGHT * ((huecoAhuecoAbajo * 0.92) / originalHeight)) * newRow);
     while (y < y2)
     {
       await animationFrame()
       doAnimation()
     }
-    // if ((y + (BoardBase.PIECE_RADIUS * 2)) >= y2)
-    // {
-    //   await animationFrame()
-    //   doAnimation()
-    // }
     y = 0;
   }
   render() {
