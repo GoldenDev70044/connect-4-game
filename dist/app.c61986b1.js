@@ -4366,7 +4366,7 @@ function initGameLocal(GameLocalCosntructor, secondPlayer) {
       return __generator(this, function (_a) {
         switch (_a.label) {
           case 0:
-            if (!(document.getElementById('imgP1').src != undefined && document.getElementById('imgP1').src != '' && document.getElementById('imgP2').src != undefined && document.getElementById('imgP2').src != '')) return [3, 3];
+            if (!(document.getElementById('imgP1').src != undefined && document.getElementById('imgP1').src != '' && document.getElementById('imgP2').src != undefined && document.getElementById('imgP2').src != '')) return [3, 4];
             if (!game.isGameWon) return [3, 2];
             game.reset();
             return [4, (0, _utils.animationFrame)()];
@@ -4395,6 +4395,13 @@ function initGameLocal(GameLocalCosntructor, secondPlayer) {
             _a.label = 3;
 
           case 3:
+            return [3, 5];
+
+          case 4:
+            alert('Please add image');
+            _a.label = 5;
+
+          case 5:
             return [2];
         }
       });
