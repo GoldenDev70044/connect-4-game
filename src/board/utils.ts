@@ -22,10 +22,33 @@ export function drawCircle(
   else
   {
     var img = document.getElementById('imgP' + player);
+    let radius = BoardBase.COLUMN_WIDTH / 100 * 60;
+    x += 5;
+    y -= 5;
+    context.save();
+    roundedImage(context, x, y, BoardBase.COLUMN_WIDTH, BoardBase.COLUMN_WIDTH, radius);
+    context.clip();
+
     context.drawImage(img, x, y, BoardBase.COLUMN_WIDTH, BoardBase.COLUMN_WIDTH);
+
   }
   context.restore();
 }
+
+function roundedImage(context: Context, x: number, y: number, width: number, height:number, radius:number){
+  context.beginPath();
+  context.moveTo(x + radius, y);
+  context.lineTo(x + width - radius, y);
+  context.quadraticCurveTo(x + width, y, x + width, y + radius);
+  context.lineTo(x + width, y + height - radius);
+  context.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
+  context.lineTo(x + radius, y + height);
+  context.quadraticCurveTo(x, y + height, x, y + height - radius);
+  context.lineTo(x, y + radius);
+  context.quadraticCurveTo(x, y, x + radius, y);
+  context.closePath();
+}
+
 /**
  * @see http://stackoverflow.com/a/11770000/917957
  * @param context Canvas 2D Context

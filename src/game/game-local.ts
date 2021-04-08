@@ -170,11 +170,11 @@ export function initGameLocal(
   })
 
   canvas.addEventListener('click', async (event: MouseEvent) => {
-    // if (
-    //   (document.getElementById('imgP1').src != undefined) && (document.getElementById('imgP1').src != '') &&
-    //   (document.getElementById('imgP2').src != undefined) && (document.getElementById('imgP2').src != '')
-    // )
-    // {
+    if (
+      (document.getElementById('imgP1').src != undefined) && (document.getElementById('imgP1').src != '') &&
+      (document.getElementById('imgP2').src != undefined) && (document.getElementById('imgP2').src != '')
+    )
+    {
 
       if (game.isGameWon) {
         game.reset()
@@ -193,7 +193,7 @@ export function initGameLocal(
         ) {
           secondPlayer.doAction(column)
         }
-      // }
+      }
     }
   })
 }

@@ -3275,10 +3275,30 @@ function drawCircle(context, _a) {
     context.fill();
   } else {
     var img = document.getElementById('imgP' + player);
+    var radius = _board.BoardBase.COLUMN_WIDTH / 100 * 60;
+    x += 5;
+    y -= 5;
+    context.save();
+    roundedImage(context, x, y, _board.BoardBase.COLUMN_WIDTH, _board.BoardBase.COLUMN_WIDTH, radius);
+    context.clip();
     context.drawImage(img, x, y, _board.BoardBase.COLUMN_WIDTH, _board.BoardBase.COLUMN_WIDTH);
   }
 
   context.restore();
+}
+
+function roundedImage(context, x, y, width, height, radius) {
+  context.beginPath();
+  context.moveTo(x + radius, y);
+  context.lineTo(x + width - radius, y);
+  context.quadraticCurveTo(x + width, y, x + width, y + radius);
+  context.lineTo(x + width, y + height - radius);
+  context.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
+  context.lineTo(x + radius, y + height);
+  context.quadraticCurveTo(x, y + height, x, y + height - radius);
+  context.lineTo(x, y + radius);
+  context.quadraticCurveTo(x, y, x + radius, y);
+  context.closePath();
 }
 
 function drawMask(board) {
@@ -3575,25 +3595,25 @@ var Board = function (_super) {
                 return __generator(this, function (_a) {
                   (0, _utils2.clearCanvas)(this);
                   x = _board.BoardBase.MASK_X_BEGIN + (_board.BoardBase.COLUMN_WIDTH + _board.BoardBase.COLUMN_X_RANGE) * column;
-                  y = _board.BoardBase.MASK_Y_BEGIN + (_board.BoardBase.COLUMN_WIDTH + _board.BoardBase.COLUMN_Y_RANGE + currentY);
+                  y = _board.BoardBase.MASK_Y_BEGIN + currentY;
+                  this.render();
                   (0, _utils2.drawCircle)(this.context, {
                     "x": x,
                     "y": y,
                     "r": _board.BoardBase.PIECE_RADIUS,
                     "player": player
                   });
-                  this.render();
                   currentY += _board.BoardBase.PIECE_RADIUS;
                   return [2];
                 });
               });
             };
 
-            y2 = _board.BoardBase.MASK_Y_BEGIN + (_board.BoardBase.COLUMN_WIDTH + _board.BoardBase.COLUMN_Y_RANGE) * newRow;
+            y2 = _board.BoardBase.MASK_Y_BEGIN + (_board.BoardBase.COLUMN_WIDTH + _board.BoardBase.COLUMN_Y_RANGE) * newRow - 50;
             _a.label = 1;
 
           case 1:
-            if (!(y + _board.BoardBase.PIECE_RADIUS * 2 < y2)) return [3, 3];
+            if (!(y < y2)) return [3, 3];
             return [4, (0, _utils.animationFrame)()];
 
           case 2:
@@ -3603,16 +3623,6 @@ var Board = function (_super) {
             return [3, 1];
 
           case 3:
-            if (!(y + _board.BoardBase.PIECE_RADIUS * 2 >= y2)) return [3, 5];
-            return [4, (0, _utils.animationFrame)()];
-
-          case 4:
-            _a.sent();
-
-            doAnimation();
-            _a.label = 5;
-
-          case 5:
             y = 0;
             return [2];
         }
@@ -4361,6 +4371,7 @@ function initGameLocal(GameLocalCosntructor, secondPlayer) {
       return __generator(this, function (_a) {
         switch (_a.label) {
           case 0:
+            if (!(document.getElementById('imgP1').src != undefined && document.getElementById('imgP1').src != '' && document.getElementById('imgP2').src != undefined && document.getElementById('imgP2').src != '')) return [3, 3];
             if (!game.isGameWon) return [3, 2];
             game.reset();
             return [4, (0, _utils.animationFrame)()];

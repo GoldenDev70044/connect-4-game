@@ -1,3 +1,4 @@
+import { brotliCompress } from 'zlib';
 import { BoardBase, BoardPiece } from '../core/src/board'
 import { Player } from '../core/src/player'
 import { onresize, animationFrame } from '../core/src/utils'
@@ -84,32 +85,32 @@ export class Board extends BoardBase {
     let currentY = 0;
     const doAnimation = async () => {
       clearCanvas(this)
-      // y = BoardBase.MASK_Y_BEGIN + (BoardBase.PIECE_RADIUS * 2) + ((BoardBase.CANVAS_HEIGHT * (huecoAhuecoAbajo / originalHeight)) + currentY);
       let x = BoardBase.MASK_X_BEGIN + (BoardBase.COLUMN_WIDTH + BoardBase.COLUMN_X_RANGE) * column;
-      y = BoardBase.MASK_Y_BEGIN + ((BoardBase.COLUMN_WIDTH + BoardBase.COLUMN_Y_RANGE) + currentY);
-      
+      // y = BoardBase.MASK_Y_BEGIN + (BoardBase.PIECE_RADIUS * 2) + ((BoardBase.CANVAS_HEIGHT * (huecoAhuecoAbajo / originalHeight)) + currentY);
+      y = BoardBase.MASK_Y_BEGIN + currentY;
+
+      this.render()
       drawCircle(this.context, {
         "x" : x, 
         "y" : y, 
         "r": BoardBase.PIECE_RADIUS,
         "player": player,
       })
-      this.render()
       currentY += BoardBase.PIECE_RADIUS
     }
 
-    let y2 = BoardBase.MASK_Y_BEGIN + ((BoardBase.COLUMN_WIDTH + BoardBase.COLUMN_Y_RANGE) * newRow);
+    let y2 = BoardBase.MASK_Y_BEGIN + ((BoardBase.COLUMN_WIDTH + BoardBase.COLUMN_Y_RANGE) * newRow) - 50;
     // var y2 = BoardBase.MASK_Y_BEGIN + (BoardBase.PIECE_RADIUS * 2) + ((BoardBase.CANVAS_HEIGHT * ((huecoAhuecoAbajo * 0.92) / originalHeight)) * newRow);
-    while ((y + (BoardBase.PIECE_RADIUS * 2)) < y2)
+    while (y < y2)
     {
       await animationFrame()
       doAnimation()
     }
-    if ((y + (BoardBase.PIECE_RADIUS * 2)) >= y2)
-    {
-      await animationFrame()
-      doAnimation()
-    }
+    // if ((y + (BoardBase.PIECE_RADIUS * 2)) >= y2)
+    // {
+    //   await animationFrame()
+    //   doAnimation()
+    // }
     y = 0;
   }
   render() {
