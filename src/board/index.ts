@@ -84,8 +84,10 @@ export class Board extends BoardBase {
     let currentY = 0;
     const doAnimation = async () => {
       clearCanvas(this)
-      var x = BoardBase.MASK_X_BEGIN + (BoardBase.PIECE_RADIUS * 2) + ((BoardBase.CANVAS_WIDTH * (huecoAhueco / originalWidth)) * column);
-      y = BoardBase.MASK_Y_BEGIN + (BoardBase.PIECE_RADIUS * 2) + ((BoardBase.CANVAS_HEIGHT * (huecoAhuecoAbajo / originalHeight)) + currentY);
+      // y = BoardBase.MASK_Y_BEGIN + (BoardBase.PIECE_RADIUS * 2) + ((BoardBase.CANVAS_HEIGHT * (huecoAhuecoAbajo / originalHeight)) + currentY);
+      let x = BoardBase.MASK_X_BEGIN + (BoardBase.COLUMN_WIDTH + BoardBase.COLUMN_X_RANGE) * column;
+      y = BoardBase.MASK_Y_BEGIN + ((BoardBase.COLUMN_WIDTH + BoardBase.COLUMN_Y_RANGE) + currentY);
+      
       drawCircle(this.context, {
         "x" : x, 
         "y" : y, 
@@ -95,8 +97,9 @@ export class Board extends BoardBase {
       this.render()
       currentY += BoardBase.PIECE_RADIUS
     }
-    
-    var y2 = BoardBase.MASK_Y_BEGIN + (BoardBase.PIECE_RADIUS * 2) + ((BoardBase.CANVAS_HEIGHT * ((huecoAhuecoAbajo * 0.92) / originalHeight)) * newRow);
+
+    let y2 = BoardBase.MASK_Y_BEGIN + ((BoardBase.COLUMN_WIDTH + BoardBase.COLUMN_Y_RANGE) * newRow);
+    // var y2 = BoardBase.MASK_Y_BEGIN + (BoardBase.PIECE_RADIUS * 2) + ((BoardBase.CANVAS_HEIGHT * ((huecoAhuecoAbajo * 0.92) / originalHeight)) * newRow);
     while ((y + (BoardBase.PIECE_RADIUS * 2)) < y2)
     {
       await animationFrame()
@@ -110,10 +113,11 @@ export class Board extends BoardBase {
     y = 0;
   }
   render() {
+    drawMask(this)
     for (let y = 0; y < BoardBase.ROWS; y++) {
       for (let x = 0; x < BoardBase.COLUMNS; x++) {
-        var x2 = BoardBase.MASK_X_BEGIN + (BoardBase.PIECE_RADIUS * 2) + ((BoardBase.CANVAS_WIDTH * (huecoAhueco / originalWidth)) * x);
-        var y2 = BoardBase.MASK_Y_BEGIN + (BoardBase.PIECE_RADIUS * 2) + ((BoardBase.CANVAS_HEIGHT * ((huecoAhuecoAbajo * 0.92) / originalHeight)) * y);
+        let x2 = BoardBase.MASK_X_BEGIN + ((BoardBase.COLUMN_WIDTH + BoardBase.COLUMN_X_RANGE) * x);
+        let y2 = BoardBase.MASK_Y_BEGIN + ((BoardBase.COLUMN_WIDTH + BoardBase.COLUMN_Y_RANGE) * y);
         drawCircle(this.context, {
           "x": x2, 
           "y" : y2, 
@@ -122,7 +126,6 @@ export class Board extends BoardBase {
         })
       }
     }
-    drawMask(this)
   }
 
   async applyPlayerAction(player: Player, column: number): Promise<boolean> {

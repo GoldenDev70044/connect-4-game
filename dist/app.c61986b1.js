@@ -1934,11 +1934,10 @@ function showMessage(message) {
 }
 
 function isCoordOnColumn(coord, columnXBegin) {
-  var originalWidth = 2970;
-  var huecoAhueco = 330;
-  var x2 = _base.BoardBase.MASK_X_BEGIN + _base.BoardBase.PIECE_RADIUS * 2 + _base.BoardBase.CANVAS_WIDTH * (huecoAhueco / originalWidth) * columnXBegin;
+  var x2 = _base.BoardBase.MASK_X_BEGIN + (_base.BoardBase.COLUMN_WIDTH + _base.BoardBase.COLUMN_X_RANGE) * columnXBegin;
+  var offset = columnXBegin > 2 ? 10 : 5;
 
-  if (coord['x'] >= x2 - _base.BoardBase.PIECE_RADIUS * 1.25 && coord['x'] <= x2 + _base.BoardBase.PIECE_RADIUS * 1.5) {
+  if (coord['x'] >= x2 - offset && coord['x'] <= x2 + _base.BoardBase.COLUMN_WIDTH + offset) {
     return true;
   }
 
@@ -2251,11 +2250,18 @@ var BoardBase = function () {
     BoardBase.CANVAS_WIDTH = BoardBase.SCALE * 700;
     BoardBase.CANVAS_HEIGHT = BoardBase.CANVAS_WIDTH * (originalHeight / originalWidth);
     BoardBase.PIECE_RADIUS = BoardBase.CANVAS_WIDTH * (hueco / originalWidth) * 0.5;
-    BoardBase.MASK_X_BEGIN = BoardBase.CANVAS_WIDTH * (originalLeft / originalWidth) - BoardBase.PIECE_RADIUS * 1;
-    BoardBase.MASK_Y_BEGIN = BoardBase.CANVAS_HEIGHT * (originalUp / originalHeight) - BoardBase.PIECE_RADIUS * 2;
     BoardBase.MESSAGE_WIDTH = BoardBase.SCALE * 400;
     BoardBase.MESSAGE_X_BEGIN = (BoardBase.CANVAS_WIDTH - BoardBase.MESSAGE_WIDTH) / 2;
     BoardBase.MESSAGE_Y_BEGIN = BoardBase.SCALE * 20;
+    var context = document.querySelector('#canvasBoard');
+    var contextWidth = context.clientWidth;
+    var contextHeight = context.clientHeight;
+    BoardBase.MASK_X_BEGIN = contextWidth / 100 * 14;
+    ;
+    BoardBase.COLUMN_WIDTH = contextWidth / 100 * 7.2;
+    BoardBase.COLUMN_X_RANGE = contextWidth / 100 * 7.38;
+    BoardBase.MASK_Y_BEGIN = contextWidth / 100 * 10;
+    BoardBase.COLUMN_Y_RANGE = contextWidth / 100 * 7.2;
   };
 
   BoardBase.prototype.applyPlayerAction = function (player, column) {
@@ -3257,8 +3263,6 @@ function drawCircle(context, _a) {
   context.save();
   var width = r * 2;
   var height = r * 2;
-  x -= width / 2;
-  y -= height / 2;
 
   if (!player) {
     context.fillStyle = 'transparent';
@@ -3271,7 +3275,7 @@ function drawCircle(context, _a) {
     context.fill();
   } else {
     var img = document.getElementById('imgP' + player);
-    context.drawImage(img, x, y, width, height);
+    context.drawImage(img, x, y, _board.BoardBase.COLUMN_WIDTH, _board.BoardBase.COLUMN_WIDTH);
   }
 
   context.restore();
@@ -3570,8 +3574,8 @@ var Board = function (_super) {
                 var x;
                 return __generator(this, function (_a) {
                   (0, _utils2.clearCanvas)(this);
-                  x = _board.BoardBase.MASK_X_BEGIN + _board.BoardBase.PIECE_RADIUS * 2 + _board.BoardBase.CANVAS_WIDTH * (huecoAhueco / originalWidth) * column;
-                  y = _board.BoardBase.MASK_Y_BEGIN + _board.BoardBase.PIECE_RADIUS * 2 + (_board.BoardBase.CANVAS_HEIGHT * (huecoAhuecoAbajo / originalHeight) + currentY);
+                  x = _board.BoardBase.MASK_X_BEGIN + (_board.BoardBase.COLUMN_WIDTH + _board.BoardBase.COLUMN_X_RANGE) * column;
+                  y = _board.BoardBase.MASK_Y_BEGIN + (_board.BoardBase.COLUMN_WIDTH + _board.BoardBase.COLUMN_Y_RANGE + currentY);
                   (0, _utils2.drawCircle)(this.context, {
                     "x": x,
                     "y": y,
@@ -3585,7 +3589,7 @@ var Board = function (_super) {
               });
             };
 
-            y2 = _board.BoardBase.MASK_Y_BEGIN + _board.BoardBase.PIECE_RADIUS * 2 + _board.BoardBase.CANVAS_HEIGHT * (huecoAhuecoAbajo * 0.92 / originalHeight) * newRow;
+            y2 = _board.BoardBase.MASK_Y_BEGIN + (_board.BoardBase.COLUMN_WIDTH + _board.BoardBase.COLUMN_Y_RANGE) * newRow;
             _a.label = 1;
 
           case 1:
@@ -3617,10 +3621,12 @@ var Board = function (_super) {
   };
 
   Board.prototype.render = function () {
+    (0, _utils2.drawMask)(this);
+
     for (var y_1 = 0; y_1 < _board.BoardBase.ROWS; y_1++) {
       for (var x = 0; x < _board.BoardBase.COLUMNS; x++) {
-        var x2 = _board.BoardBase.MASK_X_BEGIN + _board.BoardBase.PIECE_RADIUS * 2 + _board.BoardBase.CANVAS_WIDTH * (huecoAhueco / originalWidth) * x;
-        var y2 = _board.BoardBase.MASK_Y_BEGIN + _board.BoardBase.PIECE_RADIUS * 2 + _board.BoardBase.CANVAS_HEIGHT * (huecoAhuecoAbajo * 0.92 / originalHeight) * y_1;
+        var x2 = _board.BoardBase.MASK_X_BEGIN + (_board.BoardBase.COLUMN_WIDTH + _board.BoardBase.COLUMN_X_RANGE) * x;
+        var y2 = _board.BoardBase.MASK_Y_BEGIN + (_board.BoardBase.COLUMN_WIDTH + _board.BoardBase.COLUMN_Y_RANGE) * y_1;
         (0, _utils2.drawCircle)(this.context, {
           "x": x2,
           "y": y2,
@@ -3629,8 +3635,6 @@ var Board = function (_super) {
         });
       }
     }
-
-    (0, _utils2.drawMask)(this);
   };
 
   Board.prototype.applyPlayerAction = function (player, column) {
@@ -4216,7 +4220,13 @@ var GameLocal = function (_super) {
   __extends(GameLocal, _super);
 
   function GameLocal(players, board) {
-    return _super.call(this, players, board) || this;
+    var _this = _super.call(this, players, board) || this;
+
+    _this.score = {
+      p1: 0,
+      p2: 0
+    };
+    return _this;
   }
 
   GameLocal.prototype.beforeMoveApplied = function () {
@@ -4262,6 +4272,14 @@ var GameLocal = function (_super) {
       message += "It's a draw";
     } else {
       message += "Player " + winnerBoardPiece + " wins";
+
+      if (winnerBoardPiece === 1) {
+        this.score.p1 += 1;
+        document.querySelector('.score-1').innerHTML = this.score.p1.toString();
+      } else {
+        this.score.p2 += 1;
+        document.querySelector('.score-2').innerHTML = this.score.p2.toString();
+      }
     }
 
     message += '.<br />After dismissing this message, click the board to reset game.';
@@ -5225,7 +5243,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "59484" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "63833" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

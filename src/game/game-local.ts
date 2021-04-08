@@ -16,6 +16,10 @@ const statusboxBodyConnection = document.querySelector(
 const statusboxBodyPlayer = document.querySelector('.statusbox-body-player')
 
 export class GameLocal extends GameBase {
+  public score = {
+    p1: 0,
+    p2: 0
+  }
   constructor(players: Array<Player>, board: BoardBase) {
     super(players, board)
   }
@@ -61,7 +65,7 @@ export class GameLocal extends GameBase {
 
   announceWinner(winnerBoardPiece: BoardPiece) {
     super.announceWinner(winnerBoardPiece)
-
+    
     if (winnerBoardPiece === BoardPiece.EMPTY) {
       return
     }
@@ -70,6 +74,15 @@ export class GameLocal extends GameBase {
       message += `It's a draw`
     } else {
       message += `Player ${winnerBoardPiece} wins`
+      
+      if(winnerBoardPiece === 1) {
+        this.score.p1 += 1;
+        (document.querySelector('.score-1') as HTMLElement).innerHTML = this.score.p1.toString();
+      } else {
+        this.score.p2 += 1;
+        (document.querySelector('.score-2') as HTMLElement).innerHTML = this.score.p2.toString();
+      }
+      
     }
     message +=
       '.<br />After dismissing this message, click the board to reset game.'
@@ -162,7 +175,7 @@ export function initGameLocal(
     //   (document.getElementById('imgP2').src != undefined) && (document.getElementById('imgP2').src != '')
     // )
     // {
-      
+
       if (game.isGameWon) {
         game.reset()
         await animationFrame()

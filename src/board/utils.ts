@@ -8,8 +8,6 @@ export function drawCircle(
   context.save()
   var width = r * 2;
   var height = r * 2;
-  x -= width / 2;
-  y -= height / 2;
   if (!player)
   {
     context.fillStyle = 'transparent'
@@ -24,7 +22,7 @@ export function drawCircle(
   else
   {
     var img = document.getElementById('imgP' + player);
-    context.drawImage(img, x, y, width, height);
+    context.drawImage(img, x, y, BoardBase.COLUMN_WIDTH, BoardBase.COLUMN_WIDTH);
   }
   context.restore();
 }
@@ -48,7 +46,7 @@ export function drawMask(board: Board) {
   let width = (document.querySelector('.section') as HTMLElement).clientWidth;
   let height = width * 79 / 100;
   width = width > 855 ? 855 : width;
-  height = height > 679 ? 679 : height; 
+  height = height > 679 ? 679 : height;
 
   context.drawImage(img, 0, 0, width, height);
   context.restore()
