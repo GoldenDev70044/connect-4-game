@@ -2256,12 +2256,11 @@ var BoardBase = function () {
     var context = document.querySelector('#canvasBoard');
     var contextWidth = context.clientWidth;
     var contextHeight = context.clientHeight;
-    BoardBase.MASK_X_BEGIN = contextWidth / 100 * 14;
-    ;
-    BoardBase.COLUMN_WIDTH = contextWidth / 100 * 7.2;
-    BoardBase.COLUMN_X_RANGE = contextWidth / 100 * 7.38;
-    BoardBase.MASK_Y_BEGIN = contextWidth / 100 * 10;
-    BoardBase.COLUMN_Y_RANGE = contextWidth / 100 * 7.2;
+    BoardBase.MASK_X_BEGIN = contextWidth / 100 * 10.6;
+    BoardBase.COLUMN_WIDTH = contextWidth / 100 * 8.415;
+    BoardBase.COLUMN_X_RANGE = contextWidth / 100 * 7.0;
+    BoardBase.MASK_Y_BEGIN = contextWidth / 100 * 10.4;
+    BoardBase.COLUMN_Y_RANGE = contextWidth / 100 * 6.1;
   };
 
   BoardBase.prototype.applyPlayerAction = function (player, column) {
@@ -3276,12 +3275,11 @@ function drawCircle(context, _a) {
   } else {
     var img = document.getElementById('imgP' + player);
     var radius = _board.BoardBase.COLUMN_WIDTH / 100 * 60;
-    x += 5;
-    y -= 5;
+    var width_1 = _board.BoardBase.COLUMN_WIDTH + 3;
     context.save();
-    roundedImage(context, x, y, _board.BoardBase.COLUMN_WIDTH, _board.BoardBase.COLUMN_WIDTH, radius);
+    roundedImage(context, x, y, width_1, width_1, radius);
     context.clip();
-    context.drawImage(img, x, y, _board.BoardBase.COLUMN_WIDTH, _board.BoardBase.COLUMN_WIDTH);
+    context.drawImage(img, x, y, width_1, width_1);
   }
 
   context.restore();
@@ -5256,7 +5254,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50285" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "58506" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
